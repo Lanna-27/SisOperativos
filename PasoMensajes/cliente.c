@@ -9,7 +9,7 @@
 
 #define PORT 3535
 
-int main(){
+int main(int argc, char *argv[]){
     int clientfd, r;
     struct sockaddr_in client;
     struct hostent *he;
@@ -23,7 +23,9 @@ int main(){
     client.sin_family = AF_INET;
     client.sin_port = htons(PORT);
 
-    inet_aton("127.0.0.1", &client.sin_addr);
+    //printf("%s", typeof(argv[1]));
+
+    inet_aton(argv[1], &client.sin_addr);
 
     r = connect(clientfd, (struct sockaddr *)&client, (socklen_t)sizeof(struct sockaddr));
     if(r < 0){
@@ -33,7 +35,7 @@ int main(){
 
     r = recv(clientfd, buffer, 32, 0);
     buffer[r] = 0;
-    printf("\n Mensaje recibido: %s", buffer);
+    printf("\n Mensaje recibido: %s \n", buffer);
 
     close(clientfd);
 }

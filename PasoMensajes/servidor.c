@@ -42,6 +42,8 @@ int main(){
     server.sin_addr.s_addr = INADDR_ANY;
     bzero(server.sin_zero, 8);
 
+    //setsockopt(serverfd, SOL_SOCKET, SO_REUSEADDR, (const char *)&opt, sizeof(int));
+
     r = bind(serverfd, (struct sockaddr *)&server, sizeof(struct sockaddr));
     if(r < 0){
         perror("\n--> Error en bind(): ");
