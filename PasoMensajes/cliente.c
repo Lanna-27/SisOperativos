@@ -23,8 +23,6 @@ int main(int argc, char *argv[]){
     client.sin_family = AF_INET;
     client.sin_port = htons(PORT);
 
-    //printf("%s", typeof(argv[1]));
-
     inet_aton(argv[1], &client.sin_addr);
 
     r = connect(clientfd, (struct sockaddr *)&client, (socklen_t)sizeof(struct sockaddr));
