@@ -22,8 +22,7 @@ int * function(void *datos){
     fflush(stdout); 
     //for(i = 0; i < MAXITER; i++)
     //  x = sin(i);
-    //y = x; 
-    return 0;   
+    //y = x;    
 }
 
 int main(){
