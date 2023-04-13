@@ -37,7 +37,7 @@ int main()
       //padre lee pipe - pipefd[0]
       close(pipefd[1]);
       //ssize_t read(int fd, void *buf, size_t count);
-    r = read(pipefd[0], buf, 10);
+      r = read(pipefd[0], buf, 10);
       buf[r] = 0;
       //handle errors
       close(pipefd[0]);
