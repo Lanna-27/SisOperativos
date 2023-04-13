@@ -5,7 +5,7 @@
 #include <time.h>
 
 #define NUM_HILOS 16
-#define MAXITER 1E04
+#define MAXITER 1E05
 
 struct datos{
     int a;
@@ -26,7 +26,7 @@ void * function(void *datos){
     datosH->res = parcial;
     tiempo_final = clock(); 
     printf("parte de la sumatoria de leibniz en hilo %i: %f\n", i, parcial);
-    printf("Tiempo de ejecución en hilo %i: %.30f\n", i, ((double)(tiempo_inicio - tiempo_final) / CLOCKS_PER_SEC));
+    printf("Tiempo de ejecución en hilo %i: %.30f\n", i, ((double)(tiempo_final- tiempo_inicio) / CLOCKS_PER_SEC));
     fflush(stdout); 
 }
 
@@ -38,7 +38,7 @@ int main(){
  
     clock_t tiempo_inicio, tiempo_final;
 
-    //tiempo_inicio = clock();
+    tiempo_inicio = clock();
 
     for(i = 0; i < NUM_HILOS; i++){
         datosh[i].a = i;
@@ -69,8 +69,8 @@ int main(){
         pi += datosh[i].res;
     }
     printf("Aproximación de PI: %.30f\n", pi);
-    //tiempo_final = clock();
-    printf("Tiempo de ejecución: %.30f\n", ((double)(tiempo_inicio - tiempo_final) / CLOCKS_PER_SEC));
+    tiempo_final = clock();
+    printf("Tiempo de ejecución: %.30f\n", ((double)(tiempo_final- tiempo_inicio) / CLOCKS_PER_SEC));
     return 0;   
     
 }

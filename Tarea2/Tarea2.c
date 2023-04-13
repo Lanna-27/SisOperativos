@@ -9,10 +9,10 @@
 
 int main() {
     int i, j, pid, status;
-    int fd[2];
+    int pipefd[2];
     double resultado = 0.0;
 
-    if (pipe(fd) == -1) {
+    if (pipe(pipefd) == -1) {
         perror("pipe");
         exit(1);
     }
@@ -28,15 +28,21 @@ int main() {
                 parcial += (double)((j % 2 == 0) ? 1 : -1) / (2.0 * j + 1.0);
             }
             printf("Proceso %d terminado con resultado: %.15f\n", i, parcial);
-            exit((int)(parcial * 1E9));
+            itoa(parcial,string,10);
+            exit(EXIT_SUCCESS);
         }
     }
     
     for (i = 0; i < NUM_PROCESOS; i++) {
-        pid = waitpid(-1, &status, 0);
+        wait(&status);
         if (WIFEXITED(status)) {
-            printf("%d", WEXITSTATUS(status));
-            resultado += (double)WEXITSTATUS(status) / 1E9;
+
+            close(pipefd[1]);
+            r = read(pipefd[0], buf, 10);
+            buf[r] = 0;
+            close(pipefd[0]);
+
+            resultado += WEXITSTATUS(status);
         } else {
             printf("Proceso %d ha fallado\n", i);
         }
