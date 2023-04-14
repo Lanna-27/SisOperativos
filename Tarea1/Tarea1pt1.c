@@ -20,7 +20,7 @@ int main(void){
     p1.estatura = 1.65;
 
     if(archtxt != NULL && archbin != NULL){
-        printf("\nLos archivos se crearon correctamente");
+        printf("Los archivos se crearon correctamente\n");
 
         fprintf(archtxt, "%s", p1.nombre);
         fprintf(archtxt,", %i", p1.edad);

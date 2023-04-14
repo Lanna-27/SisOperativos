@@ -9,7 +9,7 @@ int main(void){
     archbin = fopen("archivo.dat", "rb");
 
     if(archtxt != NULL && archbin != NULL){
-        printf("\nLos archivos se abrieron correctamente");
+        printf("Los archivos se abrieron correctamente\n");
 
         char lineatxt[200];
         char lineabin[200];
