@@ -5,28 +5,28 @@
 #include <time.h>
 
 #define NUM_HILOS 16
-#define MAXITER 1E05
+#define MAXITER 1E07
 
 struct datos{
-    int a;
+    int a; //el hilo al que corresponde la estructura
     double res;
 };
 
 void * function(void *datos){
-    clock_t tiempo_inicio, tiempo_final;
+    clock_t tiempo_inicio = 0 , tiempo_final = 0;
     tiempo_inicio = clock();
     struct datos *datosH;
     datosH = datos;
     double parcial = 0;
     int i = datosH->a;
-    for (int j = (i * MAXITER); j < ((i + 1) * MAXITER); j++) { 
+    for (int j = (i * MAXITER); j < (i + 1) * MAXITER; j++) { 
         parcial = parcial + (double)((j % 2 == 0) ? 4 : -4) / (2.0 * j + 1.0);
     }
 
     datosH->res = parcial;
     tiempo_final = clock(); 
-    printf("parte de la sumatoria de leibniz en hilo %i: %f\n", i, parcial);
-    printf("Tiempo de ejecución en hilo %i: %.30f\n", i, ((double)(tiempo_final- tiempo_inicio) / CLOCKS_PER_SEC));
+    printf("parte de la sumatoria de leibniz en hilo %i: %.15f\n", i, parcial);
+    printf("Tiempo de ejecución en hilo %i: %.15f\n\n", i, ((double)(tiempo_final- tiempo_inicio) / CLOCKS_PER_SEC));
     fflush(stdout); 
 }
 
@@ -36,7 +36,7 @@ int main(){
     struct datos datosh[NUM_HILOS];
     int r = 0, *rh0, i;
  
-    clock_t tiempo_inicio, tiempo_final;
+    clock_t tiempo_inicio = 0, tiempo_final = 0;
 
     tiempo_inicio = clock();
 
@@ -70,7 +70,7 @@ int main(){
     }
     printf("Aproximación de PI: %.30f\n", pi);
     tiempo_final = clock();
-    printf("Tiempo de ejecución: %.30f\n", ((double)(tiempo_final- tiempo_inicio) / CLOCKS_PER_SEC));
+    printf("Tiempo de ejecución: %.15f\n", ((double)(tiempo_final- tiempo_inicio) / CLOCKS_PER_SEC));
     return 0;   
     
 }
