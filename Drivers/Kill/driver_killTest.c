@@ -18,7 +18,7 @@ MODULE_VERSION("0.1");
 
 static int      majorNumber;
 static int      process_id;
-static kill     message[256] = {0};
+static char     message[256] = {0};
 static short    size_of_message;
 static int      numberOpens = 0;
 static struct class*    killDriverClass = NULL;  ///< The device-driver class struct pointer
