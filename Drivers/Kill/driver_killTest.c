@@ -2,6 +2,7 @@
 #include <linux/module.h>       //Core header for loading LKMs into the kernel
 #include <linux/device.h>       //Header to support the kernel Driver Model
 #include <linux/kernel.h>       //Contains types, macros, functions for the kernel
+#include <linux/sched/signal.h>
 #include <linux/fs.h>           //Header for the Linux file system support
 #include <linux/uaccess.h>      //Required for the copy to user function
 #include <linux/pid.h>          //Required to know which process is by its pid
@@ -79,6 +80,7 @@ static int dev_open(struct inode *inodep, struct file *filep){
 
 static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *offset){
     int error_count = 0;
+    int r = 0;
     pid_struct = find_get_pid(process_id); //Find the process related with the recieved number
     if(!pid_struct){
         size_of_message = sprintf(message, "No hay procesos relacionados con el pid ingresado");
@@ -88,11 +90,16 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
     }
     task = pid_task(pid_struct, PIDTYPE_PID); //Obtains the task related to the process found
     //copy_to_user has the format (* to, *from, size) and returns 0 on success
+    if(!task){
+        printk(KERN_INFO "killDriver: Error at knowing the task of the process");
+        return (size_of_message=0);
+    }
     size_of_message = sprintf(message, task->comm, strlen(task->comm));
+    r = kill_pid(pid_struct, SIGKILL, 0);
     error_count = copy_to_user(buffer, message, size_of_message);
 
-    if(error_count == 0){               //if true then have success
-        printk(KERN_INFO "killDriver: Sent %d caracters to the user\n", size_of_message);
+    if(error_count == 0 && r==0){               //if true then have success
+        printk(KERN_INFO "killDriver: Sent %d caracters to the user and process killed succesfully\n", size_of_message);
         return(seze_of_message = 0);    //clear the position to the start and return 0
     }
     else {
